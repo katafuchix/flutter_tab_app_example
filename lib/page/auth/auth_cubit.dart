@@ -9,11 +9,11 @@ class AuthCubit extends Cubit<AuthState> {
         ));
 
   // 検索実行
-  Future<void> getWeather(String cityName) async {
+  Future<void> doLogin() async {
     // 画面（screen）だけをロード中に変更
     emit(state.copyWith(screen: const ScreenState.loading()));
     // 遅延確認
-    //await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 3));
     try {
       emit(state.copyWith(
         screen: ScreenState.success(
@@ -21,7 +21,6 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       ));
     } catch (e) {
-      print(e.toString());
       emit(state.copyWith(
         screen: ScreenState.error(
           message: e.toString(),

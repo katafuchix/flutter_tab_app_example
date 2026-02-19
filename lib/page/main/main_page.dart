@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import '../../core/resources/assets/resources.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/typography.dart';
@@ -9,22 +7,16 @@ import '../../core/widgets/other_option_widget.dart';
 import '../../core/widgets/custom_notification_widget.dart';
 import '../../feature/route/route_path.dart';
 
-/*
-import '../../../auth_page/presentation/bloc/auth_bloc.dart';
-import '../../../history_page/presentation/bloc/history_order_bloc.dart';
-import '../../../order_page/presentation/bloc/order_bloc.dart';
-*/
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({super.key});
+
   static String name = RoutePath.mainScreenPath;
 
   @override
-  _MainPageState createState() => _MainPageState();
+  MainPageState createState() => MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
-  bool? isFirstVisit;
-
+class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
@@ -98,7 +90,8 @@ class _MainPageState extends State<MainPage> {
               /*if (state.waitingOrders != 0 && state.waitingOrders != null)    */
               CustomNotificationWidget(
                 title: 'Документы в процессе выполнения',
-                subtitle: '', //getDocumentCountText(state.waitingOrders ?? 0),
+                subtitle: 'Title',
+                //getDocumentCountText(state.waitingOrders ?? 0),
                 type: NotificationType.warning,
                 onClose: () {},
               ),

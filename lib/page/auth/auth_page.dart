@@ -13,7 +13,7 @@ import 'auth_cubit.dart';
 import 'auth_state.dart';
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+  const AuthPage({super.key});
 
   static String name = RoutePath.authScreenPath;
 
@@ -103,7 +103,7 @@ class _AuthPageState extends State<AuthPage>
                                       height: logoSize,
                                       child: SvgPicture.asset(
                                         ImageAssets.logo,
-                                        color: AppColors.orange200,
+                                        //color: AppColors.orange200,
                                       ),
                                     ),
                                   );
@@ -113,7 +113,7 @@ class _AuthPageState extends State<AuthPage>
                           ),
                         ),
                         Text(
-                          'Вход',
+                          'Example',
                           style: AppTypography.font24Regular.copyWith(
                             fontWeight: FontWeight.w800,
                             color:
@@ -174,6 +174,7 @@ class _AuthPageState extends State<AuthPage>
                           child: ElevatedButton(
                               style: AppButtonStyle.primaryStyleOrange,
                               onPressed: () {
+                                context.read<AuthCubit>().doLogin();
                                 /*
                               context.read<AuthBloc>().add(
                                     CheckLoginPasswordEvent(
@@ -184,8 +185,7 @@ class _AuthPageState extends State<AuthPage>
                               */
                               },
                               child: state.screen.when(
-                                initial: () =>
-                                    const CircularProgressIndicator(),
+                                initial: () => const SizedBox.shrink(),
                                 loading: () =>
                                     const CircularProgressIndicator(),
                                 error: (_) => const CircularProgressIndicator(),

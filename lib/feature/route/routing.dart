@@ -47,14 +47,19 @@ class RoutesInit {
     routes: [
       GoRoute(
         path: RoutePath.init,
-        name: "InitScreen.name",
+        name: RoutePath.init,
         builder: (context, state) => const AuthPage(),
       ),
-      /*GoRoute(
+      GoRoute(
         path: RoutePath.authScreenPath,
-        name: "InitScreen.name",
+        name: AuthPage.name,
         builder: (context, state) => const AuthPage(),
-      ), */
+      ),
+      GoRoute(
+        path: RoutePath.mainScreenPath,
+        name: MainPage.name,
+        builder: (context, state) => const MainPage(),
+      ),
       /*
       StatefulShellRoute(
         branches: _bottomNavBranches,
