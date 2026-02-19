@@ -41,3 +41,14 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+*.freezed.dart
+*.g.dart
+**/ios/Flutter/Dart-Defines.xcconfig
+
+# FVM Version Cache
+.fvm/flutter_sdk
+.fvm/versions
+.fvm/release
+.fvm/version
+.fvmrc

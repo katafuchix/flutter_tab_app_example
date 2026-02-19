@@ -4,15 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 
-/*
-import 'package:vas_app/core/theme/theme_notifier.dart';
-import 'package:vas_app/feature/app/app_adaptive_provider.dart';
-import 'package:vas_app/feature/app/bloc_providers.dart';
-import 'package:vas_app/feature/app/routing/app_router_provider.dart';
-import 'package:vas_app/feature/app/routing/path_files.dart';
 import 'package:provider/provider.dart';
+import '../../core/theme/theme_notifier.dart';
+import '../route/routing.dart';
 import 'app_adaptive_provider.dart';
 import 'app_router_provider.dart';
+import 'bloc_providers.dart';
 
 class Application extends StatefulWidget {
   const Application({super.key});
@@ -72,4 +69,3 @@ class _ApplicationState extends State<Application> {
     );
   }
 }
-              */

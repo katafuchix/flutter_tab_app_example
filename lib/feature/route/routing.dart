@@ -1,18 +1,20 @@
-part of 'path_files.dart';
-/*
+//part of 'path_files.dart';;
 import 'package:go_router/go_router.dart';
 
+import '../../page/main/main_page.dart';
+import '../../page/auth/auth_page.dart';
 import 'route_path.dart';
 
 class RoutePathParameters {
   static final RoutePathParameters _routePathParameters =
-  RoutePathParameters._internal();
+      RoutePathParameters._internal();
 
   factory RoutePathParameters() => _routePathParameters;
 
   RoutePathParameters._internal();
 }
 
+/*
 final List<StatefulShellBranch> _bottomNavBranches = <StatefulShellBranch>[
   StatefulShellBranch(
     rootLocation: RoutePath.mainScreenPath,
@@ -31,7 +33,7 @@ final List<StatefulShellBranch> _bottomNavBranches = <StatefulShellBranch>[
     name: 'profile',
   ),
 ];
-
+*/
 class RoutesInit {
   factory RoutesInit() {
     return _instance ??= RoutesInit._();
@@ -45,9 +47,15 @@ class RoutesInit {
     routes: [
       GoRoute(
         path: RoutePath.init,
-        name: InitScreen.name,
-        builder: (context, state) => const InitScreen(),
+        name: "InitScreen.name",
+        builder: (context, state) => const AuthPage(),
       ),
+      /*GoRoute(
+        path: RoutePath.authScreenPath,
+        name: "InitScreen.name",
+        builder: (context, state) => const AuthPage(),
+      ), */
+      /*
       StatefulShellRoute(
         branches: _bottomNavBranches,
         builder: (BuildContext context, GoRouterState state, Widget child) {
@@ -111,8 +119,7 @@ class RoutesInit {
         path: RoutePath.authScreenPath,
         name: AuthPage.name,
         builder: (context, state) => const AuthPage(),
-      ),
+      ), */
     ],
   );
 }
-    */

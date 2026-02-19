@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../page/auth/auth_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 //import 'package:vas_app/feature/auth_page/presentation/bloc/auth_bloc.dart';
@@ -7,11 +8,20 @@ import 'package:get_it/get_it.dart';
 
 //import '../profile_page/presentation/bloc/profile_bloc.dart';
 
+// GetItは「アプリ内のどこからでも、必要なモノ（インスタンス）を取り出せる魔法の保管庫
+List<BlocProvider> buildListProviders({required GetIt locator}) {
+  return [
+    BlocProvider<AuthCubit>(
+      create: (context) => AuthCubit(),
+    ),
+  ];
+}
+
+/*
 List<BlocProvider> buildListProviders({required GetIt locator}) {
   return <BlocProvider>[
-    /*
-    BlocProvider<ProfileBloc>(
-      create: (context) => locator<ProfileBloc>(),
+    BlocProvider<AuthCubit>(
+      create: (context) => locator<AuthCubit>(),
     ),
     BlocProvider<AuthBloc>(
       create: (context) => locator<AuthBloc>(),
@@ -21,6 +31,7 @@ List<BlocProvider> buildListProviders({required GetIt locator}) {
     ),
     BlocProvider<HistoryOrderBloc>(
       create: (context) => locator<HistoryOrderBloc>(),
-    ),   */
+    ),
   ];
 }
+*/
