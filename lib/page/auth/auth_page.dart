@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import '../../core/resources/assets/resources.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/button_style.dart';
@@ -54,164 +55,162 @@ class _AuthPageState extends State<AuthPage>
       builder: (context, themeNotifier, child) {
         final isDarkTheme = themeNotifier.isDarkTheme;
 
-        return BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
-            return Scaffold(
-              backgroundColor: isDarkTheme ? AppColors.black : AppColors.white,
-              body: BlocListener<AuthCubit, AuthState>(
-                listener: (context, state) {
-                  //TODO переделать на токен
-                  //if (state is AuthSuccess) {
-                  context.goNamed(RoutePath.mainScreenPath);
-                  //}
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 40,
-                            top: 100,
-                            left: 60,
-                            right: 60,
-                          ),
-                          child: AnimatedBuilder(
-                            animation: _animationController,
-                            builder: (context, child) {
-                              double angle = _animationController.value *
-                                  2.0 *
-                                  3.141592653589793;
-                              return LayoutBuilder(
-                                builder: (context, constraints) {
-                                  // Ограничиваем размеры логотипа
-                                  double maxSize = 200;
-                                  double logoSize =
-                                      constraints.maxWidth < maxSize
-                                          ? constraints.maxWidth
-                                          : maxSize;
+        // 1. まず Scaffold を配置（この context に Scaffold 情報が載る）
+        return Scaffold(
+          backgroundColor: isDarkTheme ? AppColors.black : AppColors.white,
+          body: BlocListener<AuthCubit, AuthState>(
+            listenWhen: (previous, current) =>
+                previous.screen != current.screen ||
+                previous.dialog != current.dialog,
+            listener: (context, state) {
+              // ローディング制御（SmartDialog）
+              if (state.screen is ScreenLoading ||
+                  state.dialog is DialogLoading) {
+                SmartDialog.showLoading(msg: 'Loading...');
+              } else {
+                SmartDialog.dismiss();
+              }
 
-                                  return Transform(
-                                    transform: Matrix4.identity()
-                                      ..setEntry(3, 2, 0.001) // Перспектива
-                                      ..rotateY(angle), // Вращение вокруг оси Y
-                                    alignment: Alignment.center,
-                                    child: SizedBox(
-                                      width: logoSize,
-                                      height: logoSize,
-                                      child: SvgPicture.asset(
-                                        ImageAssets.logo,
-                                        //color: AppColors.orange200,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                        Text(
-                          'Example',
-                          style: AppTypography.font24Regular.copyWith(
-                            fontWeight: FontWeight.w800,
-                            color:
-                                isDarkTheme ? AppColors.white : AppColors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 40),
-                        TextFormField(
-                          controller: _loginController,
-                          decoration: InputDecoration(
-                            hintText: 'Введите логин',
-                            hintStyle: TextStyle(color: Colors.grey.shade400),
-                            filled: true,
-                            fillColor: isDarkTheme
-                                ? Colors.grey.shade700
-                                : Colors.grey.shade200,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                            hintText: 'Введите пароль',
-                            hintStyle: TextStyle(color: Colors.grey.shade400),
-                            filled: true,
-                            fillColor: isDarkTheme
-                                ? Colors.grey.shade700
-                                : Colors.grey.shade200,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          obscureText: true,
-                        ),
-                        const SizedBox(height: 40),
-                        Center(
-                          child: ElevatedButton(
-                              style: AppButtonStyle.primaryStyleOrange,
-                              onPressed: () {
-                                context.read<AuthCubit>().doLogin();
-                                /*
-                              context.read<AuthBloc>().add(
-                                    CheckLoginPasswordEvent(
-                                      login: _loginController.text,
-                                      password: _passwordController.text,
-                                    ),
-                                  );
-                              */
-                              },
-                              child: state.screen.when(
-                                initial: () => const SizedBox.shrink(),
-                                loading: () =>
-                                    const CircularProgressIndicator(),
-                                error: (_) => const CircularProgressIndicator(),
-                                success: (weather) =>
-                                    const CircularProgressIndicator(),
-                              )
-                              /*state.screen is ScreenState.loading
+              // 遷移・エラー処理
+              state.screen.maybeWhen(
+                success: (_) => context.goNamed(RoutePath.mainScreenPath),
+                error: (msg) => ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text(msg), backgroundColor: Colors.redAccent),
+                ),
+                orElse: () {},
+              );
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 40,
+                      top: 100,
+                      left: 60,
+                      right: 60,
+                    ),
+                    child: AnimatedBuilder(
+                      animation: _animationController,
+                      builder: (context, child) {
+                        double angle = _animationController.value *
+                            2.0 *
+                            3.141592653589793;
+                        return LayoutBuilder(
+                          builder: (context, constraints) {
+                            // Ограничиваем размеры логотипа
+                            double maxSize = 200;
+                            double logoSize = constraints.maxWidth < maxSize
+                                ? constraints.maxWidth
+                                : maxSize;
 
-
-                                ? const CircularProgressIndicator()
-                                : Text(
-                                    'Войти',
-                                    style: AppTypography.font24Regular.copyWith(
-                                      color: AppColors.white,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),   */
+                            return Transform(
+                              transform: Matrix4.identity()
+                                ..setEntry(3, 2, 0.001) // Перспектива
+                                ..rotateY(angle),
+                              // Вращение вокруг оси Y
+                              alignment: Alignment.center,
+                              child: SizedBox(
+                                width: logoSize,
+                                height: logoSize,
+                                child: SvgPicture.asset(
+                                  ImageAssets.logo,
+                                  //color: AppColors.orange200,
+                                ),
                               ),
-                        ),
-                      ],
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
-                ),
+                  Text(
+                    'Example',
+                    style: AppTypography.font24Regular.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: isDarkTheme ? AppColors.white : AppColors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  TextFormField(
+                    controller: _loginController,
+                    decoration: InputDecoration(
+                      hintText: 'Username',
+                      hintStyle: TextStyle(color: Colors.grey.shade400),
+                      filled: true,
+                      fillColor: isDarkTheme
+                          ? Colors.grey.shade700
+                          : Colors.grey.shade200,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      hintStyle: TextStyle(color: Colors.grey.shade400),
+                      filled: true,
+                      fillColor: isDarkTheme
+                          ? Colors.grey.shade700
+                          : Colors.grey.shade200,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 40),
+                  Center(
+                    child: ElevatedButton(
+                      style: AppButtonStyle.primaryStyleOrange,
+                      onPressed: () {
+                        context.read<AuthCubit>().doLogin();
+                      },
+                      child: BlocBuilder<AuthCubit, AuthState>(
+                          builder: (context, state) {
+                        return state.screen.when(
+                          initial: () => const Text(
+                            'Login',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                            ),
+                          ),
+                          loading: () => const CircularProgressIndicator(),
+                          error: (_) => const CircularProgressIndicator(),
+                          success: (weather) =>
+                              const CircularProgressIndicator(),
+                        );
+                      }),
+                    ),
+                  ),
+                ],
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );

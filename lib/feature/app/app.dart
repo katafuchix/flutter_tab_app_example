@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import '../../core/theme/theme_notifier.dart';
 import '../route/routing.dart';
 import 'app_adaptive_provider.dart';
@@ -52,7 +53,18 @@ class _ApplicationState extends State<Application> {
       child: MaterialApp.router(
         darkTheme: ThemeData.dark(),
         theme: themeNotifier.currentTheme,
-        builder: BotToastInit(),
+        // アプリ全体の描画空間をカスタマイズする場所
+        builder: (context, child) {
+          // 1. まず BotToast でラップする
+          final botToastBuilder = BotToastInit();
+          child = botToastBuilder(context, child);
+
+          // 2. 次に SmartDialog でラップする
+          final smartDialogBuilder = FlutterSmartDialog.init();
+          child = smartDialogBuilder(context, child);
+
+          return child;
+        },
         title: 'VAS documents',
         routerConfig: _router.router,
         localizationsDelegates: const [
@@ -64,7 +76,19 @@ class _ApplicationState extends State<Application> {
           Locale('en'),
         ],
         themeMode: ThemeMode.light,
+        scaffoldMessengerKey: GlobalSnackBar.scaffoldMessengerKey,
       ),
+    );
+  }
+}
+
+class GlobalSnackBar {
+  static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
+  static void show(String message) {
+    scaffoldMessengerKey.currentState?.clearSnackBars();
+    scaffoldMessengerKey.currentState?.showSnackBar(
+      SnackBar(content: Text(message)),
     );
   }
 }

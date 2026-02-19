@@ -79,6 +79,7 @@ dev_dependencies:
   #flutter_launcher_icons: ^0.14.4
   modal_bottom_sheet: ^3.0.0
   google_fonts: ^6.3.0
+  flutter_smart_dialog: ^4.9.8+7
 
 #dependency_overrides:
 

@@ -1,6 +1,6 @@
-//part of 'path_files.dart';;
+import 'package:bot_toast/bot_toast.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import '../../page/main/main_page.dart';
 import '../../page/auth/auth_page.dart';
 import 'route_path.dart';
@@ -44,6 +44,7 @@ class RoutesInit {
   static RoutesInit? _instance;
   final GoRouter router = GoRouter(
     initialLocation: RoutePath.init,
+    observers: [BotToastNavigatorObserver(), FlutterSmartDialog.observer],
     routes: [
       GoRoute(
         path: RoutePath.init,
