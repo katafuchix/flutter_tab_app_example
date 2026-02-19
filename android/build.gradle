@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Gradle 8.x への対応。package_info_plus 9.0.0 等に必須
+        classpath 'com.android.tools.build:gradle:8.2.1'
+        // Kotlinのバージョンも、Gradle 8.x に合わせて 1.9.0 以上を推奨
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10"
+    }
+}
+
 allprojects {
     repositories {
         google()
