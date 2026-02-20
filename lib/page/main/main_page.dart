@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/resources/assets/resources.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/theme_notifier.dart';
 import '../../core/theme/typography.dart';
 import '../../core/widgets/gradient_banner_widget.dart';
 import '../../core/widgets/other_option_widget.dart';
 import '../../core/widgets/custom_notification_widget.dart';
 import '../../feature/route/route_path.dart';
+import '../../feature/ui/app_bars.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -48,19 +51,12 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    //final orderBloc = context.read<OrderBloc>();
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          title: Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Text(
-              'Главная',
-              style: AppTypography.font26Regular
-                  .copyWith(fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
+    return Consumer<ThemeNotifier>(builder: (context, themeNotifier, child) {
+      final isDarkTheme = themeNotifier.isDarkTheme;
+      //final orderBloc = context.read<OrderBloc>();
+      return Scaffold(
+        appBar: buildNormalAppBar(context, 'Home Example',
+            isDarkTheme: isDarkTheme),
         body: //BlocBuilder<HistoryOrderBloc, HistoryOrderState>(
             //builder: (context, state) {
             //return
@@ -138,9 +134,10 @@ class MainPageState extends State<MainPage> {
               ),
             ],
           ),
-        )
+        ),
         //},
         //),
-        );
+      );
+    });
   }
 }

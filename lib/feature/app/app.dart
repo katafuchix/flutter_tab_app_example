@@ -39,7 +39,7 @@ class _ApplicationState extends State<Application> {
           child: Consumer<ThemeNotifier>(
             // Используем Consumer для отслеживания изменений
             builder: (context, themeNotifier, child) {
-              return buildApp(context, themeNotifier);
+              return _buildApp(context, themeNotifier);
             },
           ),
         ),
@@ -47,7 +47,8 @@ class _ApplicationState extends State<Application> {
     );
   }
 
-  buildApp(BuildContext context, ThemeNotifier themeNotifier) {
+  MultiBlocProvider _buildApp(
+      BuildContext context, ThemeNotifier themeNotifier) {
     return MultiBlocProvider(
       providers: buildListProviders(locator: locator),
       child: MaterialApp.router(
