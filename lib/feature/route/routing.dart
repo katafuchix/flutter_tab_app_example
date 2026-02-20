@@ -1,9 +1,12 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import '../../page/main/main_page.dart';
 import '../../page/auth/auth_page.dart';
+import '../../page/profile/profile_page.dart';
 import 'route_path.dart';
+import 'scaffold_with_nav_bar.dart';
 
 class RoutePathParameters {
   static final RoutePathParameters _routePathParameters =
@@ -14,6 +17,7 @@ class RoutePathParameters {
   RoutePathParameters._internal();
 }
 
+/*
 final List<StatefulShellBranch> _bottomNavBranches = <StatefulShellBranch>[
   StatefulShellBranch(
     rootLocation: RoutePath.mainScreenPath,
@@ -30,6 +34,28 @@ final List<StatefulShellBranch> _bottomNavBranches = <StatefulShellBranch>[
   StatefulShellBranch(
     rootLocation: RoutePath.profileScreenPath,
     name: 'profile',
+  ),
+];
+*/
+
+final List<StatefulShellBranch> bottomNavBranches = <StatefulShellBranch>[
+  StatefulShellBranch(
+    routes: [
+      GoRoute(
+        path: RoutePath.mainScreenPath,
+        name: MainPage.name,
+        builder: (context, state) => const MainPage(),
+      ),
+    ],
+  ),
+  StatefulShellBranch(
+    routes: [
+      GoRoute(
+        path: RoutePath.profileScreenPath,
+        name: ProfilePage.name,
+        builder: (context, state) => const ProfilePage(),
+      ),
+    ],
   ),
 ];
 
@@ -55,76 +81,59 @@ class RoutesInit {
         name: AuthPage.name,
         builder: (context, state) => const AuthPage(),
       ),
-      GoRoute(
-        path: RoutePath.mainScreenPath,
-        name: MainPage.name,
-        builder: (context, state) => const MainPage(),
-      ),
-      /*
       StatefulShellRoute(
-        branches: _bottomNavBranches,
-        builder: (BuildContext context, GoRouterState state, Widget child) {
-          // _appRouteSingleTone.isShowBottomBarMyAddressesPage =
-          //     state.subloc == '/profile/myAddresses';
-          // _appRouteSingleTone.isShowBottomBarEditAddressPage =
-          //     state.subloc == '/profile/myAddresses/editAddresses';
-          // _appRouteSingleTone.isMoveBottomPadding = state.subloc == '/profile';
-          return ScaffoldWithNavBar(body: child);
+        branches: bottomNavBranches,
+        //builder: (BuildContext context, GoRouterState state, Widget child) {
+        //return ScaffoldWithNavBar(body: child);
+        builder: (context, state, navigationShell) {
+          return ScaffoldWithNavBar(navigationShell: navigationShell);
         },
-        routes: <RouteBase>[
-
-          ///SpacePage Menu
-          GoRoute(
-              path: RoutePath.mainScreenPath,
-              name: MainPage.name,
-              builder: (context, state) => const MainPage(),
-              routes: [
-                GoRoute(
-                  path: RoutePath.getOrderScreenPath,
-                  name: GetOrderPage.name,
-                  builder: (context, state) => const GetOrderPage(),
-                ),
-                GoRoute(
-                    path: RoutePath.orderScreenPath,
-                    name: OrderPage.name,
-                    builder: (context, state) => const OrderPage(),
-                    routes: []),
-                GoRoute(
-                    path: RoutePath.historyScreenPath,
-                    name: HistoryPage.name,
-                    builder: (context, state) => const HistoryPage(),
-                    routes: []),
-              ]),
-          // GoRoute(
-          //   path: RoutePath.orderScreenPath,
-          //   name: OrderPage.name,
-          //   builder: (context, state) => const OrderPage(),
-          //   routes:  []
-          // ),
-          // GoRoute(
-          //   path: RoutePath.historyScreenPath,
-          //   name: HistoryPage.name,
-          //   builder: (context, state) => const HistoryPage(),
-          //   routes:  []
-          // ),
-          GoRoute(
-              path: RoutePath.profileScreenPath,
-              name: ProfilePage.name,
-              builder: (context, state) => const ProfilePage(),
-              routes: [
-                GoRoute(
-                  path: RoutePath.myDataPagePath,
-                  name: MyDataPage.name,
-                  builder: (context, state) => const MyDataPage(),
-                ),
-              ]),
-        ],
+        navigatorContainerBuilder: (context, navigationShell, children) {
+          return IndexedStack(
+            index: navigationShell.currentIndex,
+            children: children,
+          );
+        },
       ),
-      GoRoute(
-        path: RoutePath.authScreenPath,
-        name: AuthPage.name,
-        builder: (context, state) => const AuthPage(),
-      ), */
     ],
   );
 }
+
+/*
+      StatefulShellRoute.indexedStack(
+        branches: bottomNavBranches,
+        // builder の第3引数は Widget ではなく StatefulNavigationShell になります
+        builder: (BuildContext context, GoRouterState state,
+            StatefulNavigationShell navigationShell) {
+          // この navigationShell が、現在のタブ情報や切り替え機能を持っています
+          return ScaffoldWithNavBar(navigationShell: navigationShell);
+        },
+      )
+
+class ScaffoldWithNavBar extends StatelessWidget {
+  const ScaffoldWithNavBar({required this.navigationShell, super.key});
+
+  final StatefulNavigationShell navigationShell;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // 現在のブランチの画面を表示
+      body: navigationShell,
+      bottomNavigationBar: BottomNavigationBar(
+        // 現在のインデックスを shell から取得
+        currentIndex: navigationShell.currentIndex,
+        onTap: (int index) {
+          // タブ切り替えを実行
+          navigationShell.goBranch(index);
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: 'Settings'),
+        ],
+      ),
+    );
+  }
+}
+*/

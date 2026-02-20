@@ -7,6 +7,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import '../../core/resources/assets/resources.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/button_style.dart';
+import '../../feature/route/app_route_single_tone.dart';
 import '../../feature/route/route_path.dart';
 import '../../core/theme/theme_notifier.dart';
 import '../../feature/ui/app_bars.dart';
@@ -75,7 +76,9 @@ class _AuthPageState extends State<AuthPage>
 
               // 遷移・エラー処理
               state.screen.maybeWhen(
-                success: (_) => context.goNamed(RoutePath.mainScreenPath),
+                success: (_) {
+                  context.go(RoutePath.mainScreenPath);
+                },
                 error: (msg) => ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                       content: Text(msg), backgroundColor: Colors.redAccent),
