@@ -14,7 +14,6 @@ class RoutePathParameters {
   RoutePathParameters._internal();
 }
 
-/*
 final List<StatefulShellBranch> _bottomNavBranches = <StatefulShellBranch>[
   StatefulShellBranch(
     rootLocation: RoutePath.mainScreenPath,
@@ -33,7 +32,7 @@ final List<StatefulShellBranch> _bottomNavBranches = <StatefulShellBranch>[
     name: 'profile',
   ),
 ];
-*/
+
 class RoutesInit {
   factory RoutesInit() {
     return _instance ??= RoutesInit._();

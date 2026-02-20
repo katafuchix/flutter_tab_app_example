@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../../core/resources/assets/resources.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/theme_notifier.dart';
-import '../../core/theme/typography.dart';
 import '../../core/widgets/gradient_banner_widget.dart';
 import '../../core/widgets/other_option_widget.dart';
 import '../../core/widgets/custom_notification_widget.dart';

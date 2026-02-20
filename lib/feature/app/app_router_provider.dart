@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 class AppRouterProvider extends InheritedWidget {
   /// Constructs an [AppRouterProvider].
   const AppRouterProvider({
-    required Widget child,
+    required super.child,
     required this.goRouter,
-    Key? key,
-  }) : super(child: child, key: key);
+    super.key,
+  });
 
   /// The [GoRouter] instance used for this application.
   final GoRouter goRouter;

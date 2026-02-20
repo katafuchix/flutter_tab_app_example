@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppAdaptiveProvider extends InheritedWidget {
   const AppAdaptiveProvider({
-    required Widget child,
-    Key? key,
-  }) : super(child: child, key: key);
+    required super.child,
+    super.key,
+  });
 
   Size getHeight(BuildContext context) {
     return MediaQuery.of(context).size;
