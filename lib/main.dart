@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'feature/app/app.dart';
 import 'package:device_preview/device_preview.dart';
@@ -8,10 +7,6 @@ late SharedPreferences prefs;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  prefs = await SharedPreferences.getInstance();
-
-  final locator = GetIt.instance;
-  locator.registerSingleton<SharedPreferences>(prefs);
 
   runApp(
     // Wrapping our app in DevicePreview

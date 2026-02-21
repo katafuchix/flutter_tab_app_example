@@ -52,7 +52,8 @@ class ApeironSpaceDialog extends StatelessWidget {
         context: context,
         barrierColor: Theme.of(context).brightness == Brightness.dark
             ? Colors.black.withOpacity(.8)
-            : AppColors.orange200.withOpacity(.3),
+            //: AppColors.orange200.withOpacity(.3),
+            : Colors.black.withOpacity(.2),
         barrierDismissible: dismissible,
         builder: builder,
       );
@@ -68,11 +69,13 @@ class ApeironSpaceDialog extends StatelessWidget {
     }
 
     if (_queue.isEmpty) {
-      _queue.add(_DialogQueueData(callback: callback, idToCompare: idToCompare));
+      _queue
+          .add(_DialogQueueData(callback: callback, idToCompare: idToCompare));
       await callback();
     } else {
       if (idToCompare != null && _queue.last.idToCompare != idToCompare) {
-        _queue.add(_DialogQueueData(callback: callback, idToCompare: idToCompare));
+        _queue.add(
+            _DialogQueueData(callback: callback, idToCompare: idToCompare));
       }
     }
   }
@@ -141,10 +144,14 @@ class ApeironSpaceDialog extends StatelessWidget {
             right: 16,
           ),
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: (screenWidth - 400) / 2 > 0 ? (screenWidth - 400) / 2 : 20),
+            margin: EdgeInsets.symmetric(
+                horizontal:
+                    (screenWidth - 400) / 2 > 0 ? (screenWidth - 400) / 2 : 20),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: theme == Brightness.dark ? AppColors.gray.shade90 : AppColors.white,
+              color: theme == Brightness.dark
+                  ? AppColors.gray.shade90
+                  : AppColors.white,
               borderRadius: BorderRadius.circular(20),
               boxShadow: const [
                 BoxShadow(
@@ -161,13 +168,15 @@ class ApeironSpaceDialog extends StatelessWidget {
                   Text(
                     title!,
                     textAlign: TextAlign.center,
-                    style: AppTypography.font20Regular.copyWith(fontWeight: FontWeight.w700),
+                    style: AppTypography.font20Regular
+                        .copyWith(fontWeight: FontWeight.w700),
                   ),
                 const SizedBox(height: 12),
                 if (message != null)
                   Text(
                     message!,
-                    style: AppTypography.font20Regular.copyWith(color: AppColors.black),
+                    style: AppTypography.font20Regular
+                        .copyWith(color: AppColors.black),
                     textAlign: TextAlign.center,
                   ),
                 if (showTextField) ...[
@@ -181,7 +190,9 @@ class ApeironSpaceDialog extends StatelessWidget {
                         hintText: "в ООО 'ЛЕГ'",
                         hintStyle: TextStyle(color: Colors.grey.shade400),
                         filled: true,
-                        fillColor: isDarkTheme ? Colors.grey.shade700 : Colors.grey.shade200,
+                        fillColor: isDarkTheme
+                            ? Colors.grey.shade700
+                            : Colors.grey.shade200,
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                           borderRadius: BorderRadius.circular(12),
@@ -205,11 +216,12 @@ class ApeironSpaceDialog extends StatelessWidget {
                     backgroundColor: theme == Brightness.dark
                         ? AppColors.green300.withOpacity(0.8)
                         : AppColors.green200.withOpacity(0.8),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0)),
                   ),
                   onPressed: onConfirmTap,
                   child: Text(
-                    confirmText ?? 'Подтвердить',
+                    confirmText ?? 'Confirm',
                     style: AppTypography.font16Regular.copyWith(
                       color: AppColors.black,
                       fontWeight: FontWeight.w700,
@@ -222,7 +234,8 @@ class ApeironSpaceDialog extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       foregroundColor: AppColors.white,
                       backgroundColor: AppColors.red.withOpacity(0.8),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0)),
                     ),
                     onPressed: onCloseTap,
                     child: Text(

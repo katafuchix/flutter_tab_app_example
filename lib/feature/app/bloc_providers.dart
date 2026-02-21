@@ -1,8 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/utils/network_cubit.dart';
-import '../../core/utils/theme_cubit.dart';
 import '../../page/auth/auth_cubit.dart';
 import '../../page/profile/profile_cubit.dart';
 
@@ -18,27 +16,5 @@ List<BlocProvider> buildListProviders({required GetIt locator}) {
     BlocProvider<ProfileCubit>(
       create: (context) => ProfileCubit(),
     ),
-    BlocProvider<ThemeCubit>(
-      create: (context) => ThemeCubit(locator<SharedPreferences>()),
-    ),
   ];
 }
-
-/*
-List<BlocProvider> buildListProviders({required GetIt locator}) {
-  return <BlocProvider>[
-    BlocProvider<AuthCubit>(
-      create: (context) => locator<AuthCubit>(),
-    ),
-    BlocProvider<AuthBloc>(
-      create: (context) => locator<AuthBloc>(),
-    ),
-    BlocProvider<OrderBloc>(
-      create: (context) => locator<OrderBloc>(),
-    ),
-    BlocProvider<HistoryOrderBloc>(
-      create: (context) => locator<HistoryOrderBloc>(),
-    ),
-  ];
-}
-*/

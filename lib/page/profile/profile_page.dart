@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/resources/assets/resources.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/theme_notifier.dart';
@@ -12,7 +11,6 @@ import '../../core/theme/typography.dart';
 import '../../core/widgets/animated_list_item.dart';
 import '../../core/widgets/ods_alert.dart';
 import '../../feature/route/route_path.dart';
-import '../../core/widgets/text_block.dart';
 import '../auth/auth_cubit.dart';
 import '../auth/auth_state.dart';
 import 'profile_cubit.dart';
@@ -39,11 +37,6 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     //final userId = ""; //context.read<AuthBloc>().state.userId;
     //final token = ""; //context.read<AuthBloc>().state.token;
-    /*context
-        .read<ProfileBloc>()
-        .add(GetUserInfoEvent(userId: userId, userToken: token));
-        
-     */
   }
 
   @override
@@ -51,7 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
     return Consumer<ThemeNotifier>(
       builder: (context, themeNotifier, child) {
         final isDarkTheme = themeNotifier.isDarkTheme;
-        //return SizedBox.shrink();
 
         return BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
@@ -148,14 +140,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       title: 'Темная тема',
                       onTap: () {
                         themeNotifier.toggleTheme();
-                        /*
-                        setState(() {
-                          valueSwitchButton = !valueSwitchButton;
-                        });
-                        _saveThemePreference(
-                            valueSwitchButton); // Сохраняем новый выбор темы
-
-                         */
                       },
                       isDarkTheme: isDarkTheme,
                     ),
@@ -172,16 +156,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           onTap: () {
                             ApeironSpaceDialog.showActionDialog(context,
                                 title:
-                                    "Вы уверены что хотите выйти из своего аккаунта?",
+                                    "Are you sure you want to log out of your account ?",
                                 onPressedConfirm: () {},
-                                confirmText: "Отмена",
-                                closeText: 'Выйти', onPressedClosed: () {
-                              /*context.read<AuthBloc>().add(
-                                    ExiteEvent(),
-                                  );
-                              context.read<ProfileBloc>().add(
-                                    ClearUserInfoEvent(),
-                                  );  */
+                                confirmText: "Cancel",
+                                closeText: 'Logout', onPressedClosed: () {
                               context.goNamed(RoutePath.authScreenPath);
                             });
                           },
@@ -206,7 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
     required String icon,
     required String title,
     required bool isDarkTheme,
-    bool isDestructive = false, // <-- новый параметр
+    bool isDestructive = false,
     VoidCallback? onTap,
   }) {
     final color = isDestructive
@@ -222,7 +200,10 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               SvgPicture.asset(
                 icon,
-                color: color,
+                colorFilter: ColorFilter.mode(
+                  color, // 適用したい色
+                  BlendMode.srcIn, // 画像の形に合わせて着色
+                ),
               ),
               const SizedBox(width: 16),
               Text(
@@ -254,7 +235,10 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             SvgPicture.asset(
               icon,
-              color: isDarkTheme ? AppColors.white : AppColors.black,
+              colorFilter: ColorFilter.mode(
+                isDarkTheme ? AppColors.white : AppColors.black, // 適用したい色
+                BlendMode.srcIn, // 画像の形に合わせて着色
+              ),
             ),
             const SizedBox(width: 16),
             Text(title,
@@ -263,23 +247,10 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
         CupertinoSwitch(
-          value: isDarkTheme, // ← ここが統一ポイント
+          value: isDarkTheme,
           onChanged: (_) {
-            if (onTap != null) onTap(); // ← 変更は Notifier に任せる
+            if (onTap != null) onTap();
           },
-          /*
-          value: valueSwitchButton,
-          onChanged: (value) {
-            if (onTap != null) {
-              onTap();
-            }
-            setState(() {
-              valueSwitchButton = value;
-            });
-            _saveThemePreference(value); // Сохраняем новый выбор темы
-          },*/
-          //activeTrackColor: AppColors.orange100,
-          //inactiveTrackColor: AppColors.gray.shade30,
         ),
       ],
     );

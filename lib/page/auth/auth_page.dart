@@ -202,18 +202,11 @@ class _AuthPageState extends State<AuthPage>
                           child: BlocBuilder<AuthCubit, AuthState>(
                               builder: (context, state) {
                             return state.screen.when(
-                              initial: () => const Text(
-                                'Login',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                ),
-                              ),
-                              loading: () => const CircularProgressIndicator(),
-                              error: (_) => const CircularProgressIndicator(),
-                              success: (weather) =>
-                                  const CircularProgressIndicator(),
-                            );
+                                initial: () => _Logintext(),
+                                loading: () =>
+                                    const CircularProgressIndicator(),
+                                error: (_) => const CircularProgressIndicator(),
+                                success: (_) => _Logintext());
                           }),
                         ),
                       ),
@@ -225,6 +218,16 @@ class _AuthPageState extends State<AuthPage>
           ),
         );
       },
+    );
+  }
+
+  Widget _Logintext() {
+    return const Text(
+      'Login',
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 22,
+      ),
     );
   }
 }
