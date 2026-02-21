@@ -7,7 +7,6 @@ import '../../core/resources/assets/resources.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/typography.dart';
 import 'route_path.dart';
-import 'routing.dart';
 import 'scaffold_with_nav_bar_tab_item.dart';
 import 'app_route_single_tone.dart';
 
@@ -64,10 +63,14 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar>
     final bool showNavBar =
         shellState != null && appRouteSingleTone.showValue != 0;
 
+    final double currentScale = data.textScaler.scale(1);
+
     return MediaQuery(
       data: data.copyWith(
-        textScaler: TextScaler.linear(
-            data.textScaleFactor > 1.2 ? 1.2 : data.textScaleFactor),
+        // 0.8〜1.2の間に収める、といった指定が直感的になります
+        textScaler: TextScaler.linear(currentScale.clamp(0.0, 1.2)),
+        //textScaler: TextScaler.linear(
+        //    data.textScaler.scale(1) > 1.2 ? 1.2 : data.textScaler.scale(1)),
       ),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
