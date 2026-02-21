@@ -13,9 +13,12 @@ import '../../core/widgets/animated_list_item.dart';
 import '../../core/widgets/ods_alert.dart';
 import '../../feature/route/route_path.dart';
 import '../../core/widgets/text_block.dart';
+import '../auth/auth_cubit.dart';
+import '../auth/auth_state.dart';
+import 'profile_cubit.dart';
+import 'profile_state.dart';
 
 //import '../../feature/auth_page/presentation/bloc/auth_bloc.dart';
-
 //import '../bloc/profile_bloc.dart';
 //import '../widjets/text_block.dart';
 
@@ -34,30 +37,13 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    final userId = ""; //context.read<AuthBloc>().state.userId;
-    final token = ""; //context.read<AuthBloc>().state.token;
+    //final userId = ""; //context.read<AuthBloc>().state.userId;
+    //final token = ""; //context.read<AuthBloc>().state.token;
     /*context
         .read<ProfileBloc>()
         .add(GetUserInfoEvent(userId: userId, userToken: token));
         
      */
-    _loadThemePreference();
-  }
-
-  // Загрузка состояния темы из SharedPreferences
-  Future<void> _loadThemePreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isDarkTheme =
-        prefs.getBool('isDarkTheme') ?? false; // По умолчанию светлая тема
-    setState(() {
-      valueSwitchButton = isDarkTheme;
-    });
-  }
-
-  // Сохранение состояния темы в SharedPreferences
-  Future<void> _saveThemePreference(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isDarkTheme', value);
   }
 
   @override
@@ -65,14 +51,15 @@ class _ProfilePageState extends State<ProfilePage> {
     return Consumer<ThemeNotifier>(
       builder: (context, themeNotifier, child) {
         final isDarkTheme = themeNotifier.isDarkTheme;
-        return SizedBox.shrink();
-        /*
-        return BlocBuilder<ProfileBloc, ProfileState>(
+        //return SizedBox.shrink();
+
+        return BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
             return Scaffold(
               appBar: AppBar(
                 title: Text(
-                  '${state.userInfo?.name ?? ''} ${state.userInfo?.middleName ?? ''}',
+                  //'${state.userInfo?.name ?? ''} ${state.userInfo?.middleName ?? ''}',
+                  '',
                   style: AppTypography.font26Regular.copyWith(
                     fontWeight: FontWeight.w700,
                     color: isDarkTheme ? AppColors.white : AppColors.black,
@@ -83,6 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
               body: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                // 最初に下から50px分ずれて → 400msでスライドしながら表示
                 child: AnimatedListItems(
                   duration: const Duration(milliseconds: 400),
                   verticalOffset: 50.0,
@@ -117,6 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(
                       height: 10,
                     ),
+                    /*
                     state.userInfo?.lastName != null
                         ? TextBlockWidget(
                             text: state.userInfo?.lastName ?? '',
@@ -147,6 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             hintText: 'Логин',
                           )
                         : const SizedBox(),
+                    */
                     const SizedBox(height: 30),
                     _buildTextRow(
                       title: 'Настройки',
@@ -158,11 +148,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       title: 'Темная тема',
                       onTap: () {
                         themeNotifier.toggleTheme();
+                        /*
                         setState(() {
                           valueSwitchButton = !valueSwitchButton;
                         });
                         _saveThemePreference(
                             valueSwitchButton); // Сохраняем новый выбор темы
+
+                         */
                       },
                       isDarkTheme: isDarkTheme,
                     ),
@@ -172,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       isDarkTheme: isDarkTheme,
                     ),
                     const SizedBox(height: 30),
-                    BlocBuilder<AuthBloc, AuthState>(
+                    BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
                         return _buildOptionRow(
                           isDestructive: true,
@@ -183,12 +176,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 onPressedConfirm: () {},
                                 confirmText: "Отмена",
                                 closeText: 'Выйти', onPressedClosed: () {
-                              context.read<AuthBloc>().add(
+                              /*context.read<AuthBloc>().add(
                                     ExiteEvent(),
                                   );
                               context.read<ProfileBloc>().add(
                                     ClearUserInfoEvent(),
-                                  );
+                                  );  */
                               context.goNamed(RoutePath.authScreenPath);
                             });
                           },
@@ -204,7 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             );
           },
-        ); */
+        );
       },
     );
   }
@@ -270,6 +263,11 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
         CupertinoSwitch(
+          value: isDarkTheme, // ← ここが統一ポイント
+          onChanged: (_) {
+            if (onTap != null) onTap(); // ← 変更は Notifier に任せる
+          },
+          /*
           value: valueSwitchButton,
           onChanged: (value) {
             if (onTap != null) {
@@ -279,7 +277,7 @@ class _ProfilePageState extends State<ProfilePage> {
               valueSwitchButton = value;
             });
             _saveThemePreference(value); // Сохраняем новый выбор темы
-          },
+          },*/
           //activeTrackColor: AppColors.orange100,
           //inactiveTrackColor: AppColors.gray.shade30,
         ),
