@@ -8,10 +8,11 @@ void showTopErrorSnackBar(BuildContext context, {required String text}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+        borderRadius: BorderRadius.vertical(
+            top: Radius.circular(10), bottom: Radius.circular(10)),
       ),
       behavior: SnackBarBehavior.floating,
-      backgroundColor: AppColors.red100,
+      backgroundColor: AppColors.red,
       margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
       content: InkWell(
         onTap: () {
@@ -21,7 +22,7 @@ void showTopErrorSnackBar(BuildContext context, {required String text}) {
         },
         child: Row(
           children: [
-            const Icon(Icons.error_outline, color: AppColors.appBackground),
+            const Icon(Icons.error_outline, color: AppColors.white),
             const SizedBox(width: 8),
             Expanded(
               child: Padding(
