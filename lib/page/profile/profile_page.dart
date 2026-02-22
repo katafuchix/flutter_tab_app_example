@@ -11,6 +11,7 @@ import '../../core/theme/typography.dart';
 import '../../core/widgets/animated_list_item.dart';
 import '../../core/widgets/ods_alert.dart';
 import '../../feature/route/route_path.dart';
+import '../../feature/ui/app_bars.dart';
 import '../auth/auth_cubit.dart';
 import '../auth/auth_state.dart';
 import 'profile_cubit.dart';
@@ -48,17 +49,8 @@ class _ProfilePageState extends State<ProfilePage> {
         return BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
             return Scaffold(
-              appBar: AppBar(
-                title: Text(
-                  //'${state.userInfo?.name ?? ''} ${state.userInfo?.middleName ?? ''}',
-                  '',
-                  style: AppTypography.font26Regular.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: isDarkTheme ? AppColors.white : AppColors.black,
-                  ),
-                ),
-                centerTitle: true,
-              ),
+              appBar: buildNormalAppBar(context, 'Profile',
+                  isDarkTheme: isDarkTheme),
               body: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),

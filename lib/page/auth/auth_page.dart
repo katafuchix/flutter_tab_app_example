@@ -7,7 +7,6 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import '../../core/resources/assets/resources.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/button_style.dart';
-import '../../feature/route/app_route_single_tone.dart';
 import '../../feature/route/route_path.dart';
 import '../../core/theme/theme_notifier.dart';
 import '../../feature/ui/app_bars.dart';
@@ -202,11 +201,11 @@ class _AuthPageState extends State<AuthPage>
                           child: BlocBuilder<AuthCubit, AuthState>(
                               builder: (context, state) {
                             return state.screen.when(
-                                initial: () => _Logintext(),
+                                initial: () => _loginText(),
                                 loading: () =>
                                     const CircularProgressIndicator(),
                                 error: (_) => const CircularProgressIndicator(),
-                                success: (_) => _Logintext());
+                                success: (_) => _loginText());
                           }),
                         ),
                       ),
@@ -221,7 +220,7 @@ class _AuthPageState extends State<AuthPage>
     );
   }
 
-  Widget _Logintext() {
+  Widget _loginText() {
     return const Text(
       'Login',
       style: TextStyle(

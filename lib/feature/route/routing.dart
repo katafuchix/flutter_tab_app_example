@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import '../../page/main/main_page.dart';
 import '../../page/auth/auth_page.dart';
+import '../../page/my_data/my_data_page.dart';
 import '../../page/profile/profile_page.dart';
 import 'route_path.dart';
 import 'scaffold_with_nav_bar.dart';
@@ -51,10 +52,16 @@ final List<StatefulShellBranch> bottomNavBranches = <StatefulShellBranch>[
   StatefulShellBranch(
     routes: [
       GoRoute(
-        path: RoutePath.profileScreenPath,
-        name: ProfilePage.name,
-        builder: (context, state) => const ProfilePage(),
-      ),
+          path: RoutePath.profileScreenPath,
+          name: ProfilePage.name,
+          builder: (context, state) => const ProfilePage(),
+          routes: [
+            GoRoute(
+              path: RoutePath.myDataPagePath,
+              name: MyDataPage.name,
+              builder: (context, state) => const MyDataPage(),
+            ),
+          ]),
     ],
   ),
 ];

@@ -50,7 +50,8 @@ AppBar buildNormalAppBar(BuildContext context, String title,
     leading: isCloseButtonVisible
         ? IconButton(
             icon: Icon(
-              Icons.close,
+              //Icons.close,
+              Icons.arrow_back_ios_new,
               color: isDarkTheme ? AppColors.white : AppColors.black,
             ),
             onPressed: () {

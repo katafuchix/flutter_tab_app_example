@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/resources/assets/resources.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/theme_notifier.dart';
+import '../../core/widgets/bot_toast_util.dart';
 import '../../core/widgets/gradient_banner_widget.dart';
 import '../../core/widgets/other_option_widget.dart';
 import '../../core/widgets/custom_notification_widget.dart';
@@ -53,6 +54,12 @@ class MainPageState extends State<MainPage> {
     return Consumer<ThemeNotifier>(builder: (context, themeNotifier, child) {
       final isDarkTheme = themeNotifier.isDarkTheme;
       //final orderBloc = context.read<OrderBloc>();
+
+      BotToastUtil().showNotification(
+        icon: null,
+        title: 'message',
+      );
+
       return Scaffold(
         appBar: buildNormalAppBar(context, 'Home Example',
             isDarkTheme: isDarkTheme),

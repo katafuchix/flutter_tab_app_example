@@ -9,21 +9,21 @@ class ApiErrorInterceptor extends Interceptor {
     if (err.response != null) {
       final statusCode = err.response?.statusCode;
 
-      // Обработка ошибки 422: Неверное имя пользователя или пароль
+      // Handling Error 422: Invalid username or password
       if (statusCode == 422) {
         GetIt.I<BotToastDi>().showNotification(
           icon: null,
-          title: "Неверное имя пользователя или пароль",
+          title: "Incorrect username or password",
         );
         throw FailedRequestException(
-          title: 'Ошибка',
-          message: 'Неверное имя пользователя или пароль',
+          title: 'Error',
+          message: 'Incorrect username or password',
           requestOptions: err.requestOptions,
           error: err.error,
         );
       }
 
-      // Обработка ошибки 500: Ошибка на сервере
+      // Handling Error 500: Server Error
       else if (statusCode == 500) {
         GetIt.I<BotToastDi>().showNotification(
           icon: null,
@@ -35,15 +35,15 @@ class ApiErrorInterceptor extends Interceptor {
         );
       }
 
-      // Для других кодов ошибок, которые не покрыты
+      // For other error codes that are not covered
       else {
         GetIt.I<BotToastDi>().showNotification(
           icon: null,
           title: '${err.message}',
         );
         throw FailedRequestException(
-          title: 'Ошибка',
-          message: 'Неизвестная ошибка',
+          title: 'Error',
+          message: 'Unknown error',
           requestOptions: err.requestOptions,
           error: err.error,
         );
