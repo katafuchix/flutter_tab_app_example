@@ -33,11 +33,11 @@ class _ApplicationState extends State<Application> {
     return AppAdaptiveProvider(
       child: AppRouterProvider(
         goRouter: _router.router,
+        // Add ChangeNotifierProvider
         child: ChangeNotifierProvider<ThemeNotifier>(
-          // Добавляем ChangeNotifierProvider
           create: (_) => ThemeNotifier(),
+          // Consumer で変更を反映
           child: Consumer<ThemeNotifier>(
-            // Используем Consumer для отслеживания изменений
             builder: (context, themeNotifier, child) {
               return _buildApp(context, themeNotifier);
             },
