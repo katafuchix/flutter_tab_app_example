@@ -23,19 +23,6 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-
-    /*final authBloc = context.read<AuthBloc>();
-    if (authBloc.state.isFirstVisit == true) {
-      context.read<OrderBloc>().add(
-            GetOrdersEvent(
-                userId: authBloc.state.userId, token: authBloc.state.token),
-          );
-      context.read<HistoryOrderBloc>().add(
-            GetHistoryOrdersEvent(
-                userId: authBloc.state.userId, token: authBloc.state.token),
-          );
-    }
-    */
   }
 
   String getDocumentCountText(int count) {
@@ -53,7 +40,6 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Consumer<ThemeNotifier>(builder: (context, themeNotifier, child) {
       final isDarkTheme = themeNotifier.isDarkTheme;
-      //final orderBloc = context.read<OrderBloc>();
 
       BotToastUtil().showNotification(
         icon: null,
@@ -63,19 +49,9 @@ class MainPageState extends State<MainPage> {
       return Scaffold(
         appBar: buildNormalAppBar(context, 'Home Example',
             isDarkTheme: isDarkTheme),
-        body: //BlocBuilder<HistoryOrderBloc, HistoryOrderState>(
-            //builder: (context, state) {
-            //return
-            RefreshIndicator(
+        body: RefreshIndicator(
           color: AppColors.orange100,
-          onRefresh: () async {
-            /*  final authBloc = context.read<AuthBloc>();
-              context.read<HistoryOrderBloc>().add(
-                    GetHistoryOrdersEvent(
-                        userId: authBloc.state.userId,
-                        token: authBloc.state.token),
-                  );     */
-          },
+          onRefresh: () async {},
           child: ListView(
             padding: const EdgeInsets.all(16),
             physics: const AlwaysScrollableScrollPhysics(),
